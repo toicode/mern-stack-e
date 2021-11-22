@@ -21,10 +21,9 @@ const adminOrderRoute = require("./routes/admin/order.routes");
 env.config();
 
 // mongodb connection
-//mongodb+srv://root:<password>@cluster0.8pl1w.mongodb.net/<dbname>?retryWrites=true&w=majority
 mongoose
   .connect(
-    `mongodb://localhost:27017/data_ecommerce`,
+    process.env.MONGO_URL,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
