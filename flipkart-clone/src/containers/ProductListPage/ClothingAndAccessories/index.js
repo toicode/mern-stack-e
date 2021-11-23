@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductsBySlug } from "../../../actions";
 import Card from "../../../components/UI/Card";
-import { BiRupee } from "react-icons/bi";
+
 import { Link } from "react-router-dom";
-
+import {generatePublicUrl} from './../../../urlConfig';
 import "./style.css";
-
+import { formatPrice} from './../../../common/utils';
 /**
  * @author
  * @function ClothingAndAccessories
@@ -36,13 +36,12 @@ const ClothingAndAccessories = (props) => {
               className="caImgContainer"
               to={`/${product.slug}/${product._id}/p`}
             >
-              {/* <img src={product.productPictures[0].img} /> */}
+              <img src={product.productPictures[0] ? generatePublicUrl(product.productPictures[0].img):''} />
             </Link>
             <div>
               <div className="caProductName">{product.name}</div>
-              <div className="caProductPrice">
-                <BiRupee />
-                {product.price}
+              <div className="caProductPrice">               
+                {formatPrice(product.price)} VNĐ
               </div>
             </div>
           </div>

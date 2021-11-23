@@ -6,7 +6,7 @@ import Modal from "../../components/UI/Modal";
 import { useSelector, useDispatch } from "react-redux";
 import { addProduct, deleteProductById } from "../../actions";
 import "./style.css";
-
+import { generatePublicUrl } from "./../../urlConfig";
 /**
  * @author
  * @function Products
@@ -61,6 +61,14 @@ const Products = (props) => {
     setProductPictures([...productPictures, e.target.files[0]]);
   };
 
+  const confirmDeleteProduct = (product) => {
+    if (window.confirm(`Are you sure you want to delete this product ${product.name}?`)) {
+      const payload = {
+        productId: product._id,
+      };
+      dispatch(deleteProductById(payload));
+    }
+  }
   const renderProducts = () => {
     return (
       <Table style={{ fontSize: 12 }} responsive="sm">
@@ -77,29 +85,26 @@ const Products = (props) => {
         <tbody>
           {product.products.length > 0
             ? product.products.map((product) => (
-                <tr key={product._id}>
-                  {/* <td>{product._id}</td> */}
-                  <td>{product.name}</td>
-                  <td>{product.price}</td>
-                  <td>{product.quantity}</td>
-                  <td>{product.category.name}</td>
-                  <td>
-                    <button onClick={() => showProductDetailsModal(product)}>
-                      View
-                    </button>
-                    <button
-                      onClick={() => {
-                        const payload = {
-                          productId: product._id,
-                        };
-                        dispatch(deleteProductById(payload));
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))
+              <tr key={product._id}>
+                {/* <td>{product._id}</td> */}
+                <td>{product.name}</td>
+                <td>{product.price}</td>
+                <td>{product.quantity}</td>
+                <td>{product.category.name}</td>
+                <td>
+                  <button onClick={() => showProductDetailsModal(product)}>
+                    View
+                  </button>
+                  <button
+                    onClick={() => {
+                      confirmDeleteProduct(product)
+                    }}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))
             : null}
         </tbody>
       </Table>
@@ -133,9 +138,11 @@ const Products = (props) => {
           onChange={(e) => setPrice(e.target.value)}
         />
         <Input
+        type="textarea"
           label="Description"
           value={description}
-          placeholder={`Description`}
+          placeholder={`Description`}      
+          multiline={true}
           onChange={(e) => setDescription(e.target.value)}
         />
         <select
@@ -152,8 +159,8 @@ const Products = (props) => {
         </select>
         {productPictures.length > 0
           ? productPictures.map((pic, index) => (
-              <div key={index}>{pic.name}</div>
-            ))
+            <div key={index}>{pic.name}</div>
+          ))
           : null}
         <input
           type="file"
@@ -169,6 +176,7 @@ const Products = (props) => {
   };
 
   const showProductDetailsModal = (product) => {
+    console.log(product);
     setProductDetails(product);
     setProductDetailModal(true);
   };
@@ -184,6 +192,8 @@ const Products = (props) => {
         handleClose={handleCloseProductDetailsModal}
         modalTitle={"Product Details"}
         size="lg"
+        // textButton='Close'
+        onSubmit={handleCloseProductDetailsModal}
       >
         <Row>
           <Col md="6">
@@ -217,7 +227,7 @@ const Products = (props) => {
             <div style={{ display: "flex" }}>
               {productDetails.productPictures.map((picture) => (
                 <div className="productImgContainer">
-                  <img src={picture.img} alt="" />
+                  <img src={generatePublicUrl(picture.img)} alt="" />
                 </div>
               ))}
             </div>

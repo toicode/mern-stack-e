@@ -10,11 +10,12 @@ console.log('create product...');
   let productPictures = [];
 
   if (req.files.length > 0) {
+    console.log(req.files);
     productPictures = req.files.map((file) => {
-      return { img: file.location };
+      return { img: file.filename };
     });
   }
-
+console.log(productPictures);
   const product = new Product({
     name: name,
     slug: slugify(name),
@@ -27,7 +28,10 @@ console.log('create product...');
   });
 console.log(product);
   product.save((error, product) => {
-    if (error) return res.status(400).json({ error });
+    if (error) {
+      console.error(error);
+      return res.status(400).json({ error });
+    }
     if (product) {
       res.status(201).json({ product, files: req.files });
     }

@@ -24,11 +24,11 @@ const NewModal = (props) => {
           <Button
             variant="primary"
             {...props}
-            style={{ backgroundColor: "#333" }}
-            className="btn-sm"
+            style={{ }}
+            className="btn-sm btn-primary"
             onClick={props.onSubmit}
           >
-            Save
+            {props.textButton? props.tesxtButton : 'Save'}
           </Button>
         )}
       </Modal.Footer>

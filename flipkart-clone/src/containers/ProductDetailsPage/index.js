@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProductDetailsById } from "../../actions";
 import Layout from "../../components/Layout";
 import { IoIosArrowForward, IoIosStar, IoMdCart } from "react-icons/io";
-import { BiRupee } from "react-icons/bi";
+// import { BiRupee } from "react-icons/bi";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { MaterialButton } from "../../components/MaterialUI";
 import "./style.css";
 import { addToCart } from "../../actions";
-
+import { formatPrice} from './../../common/utils';
+import {generatePublicUrl} from './../../urlConfig';
 /**
  * @author
  * @function ProductDetailsPage
@@ -41,15 +42,15 @@ const ProductDetailsPage = (props) => {
           <div className="verticalImageStack">
             {product.productDetails.productPictures.map((thumb, index) => (
               <div className="thumbnail">
-                <img src={thumb.img} alt={thumb.img} />
+                <img src={generatePublicUrl(thumb.img)} alt={generatePublicUrl(thumb.img)} />
               </div>
             ))}
           </div>
           <div className="productDescContainer">
             <div className="productDescImgContainer">
               <img
-                src={product.productDetails.productPictures[0].img}
-                alt={`${product.productDetails.productPictures[0].img}`}
+                src={generatePublicUrl(product.productDetails.productPictures[0].img)}
+                alt={`${generatePublicUrl(product.productDetails.productPictures[0].img)}`}
               />
             </div>
 
@@ -115,13 +116,13 @@ const ProductDetailsPage = (props) => {
               </span>
             </div>
             <div className="extraOffer">
-              Extra <BiRupee />
+            Extra {/*  <BiRupee /> */}
               4500 off{" "}
             </div>
             <div className="flexRow priceContainer">
               <span className="price">
-                <BiRupee />
-                {product.productDetails.price}
+      
+                {formatPrice(product.productDetails.price)} VNĐ
               </span>
               <span className="discount" style={{ margin: "0 10px" }}>
                 22% off
